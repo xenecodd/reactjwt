@@ -1,5 +1,6 @@
 import DataTable from "react-data-table-component";
 import React, {useEffect, useState} from "react";
+import isLoggedIn from './App.js'
 
   const token= window.localStorage.getItem('x-access-token')
   const columns = [
@@ -25,7 +26,6 @@ import React, {useEffect, useState} from "react";
 function Userlist(){
       const [user, setUser] = useState('');
        useEffect(() => {
-    console.log('başladı');
     const baseURL = process.env.REACT_APP_BASE_URL;
     console.log(token);
     fetch(`${baseURL}/user`, {
@@ -38,12 +38,9 @@ function Userlist(){
         .then(res => res.json())
         .then(user => {
           setUser(user['users']);
-          window.localStorage.setItem('users', user['users']);
-          console.log(window.localStorage.getItem('users'));
+          console.log(user);
         });
-  }, );
-    console.log('test')
-    if (user){console.log('geldimmm')}
+  },[isLoggedIn] );
           return(
               <div className='container mt-5'>
                   <h1>List of Registered Users</h1>

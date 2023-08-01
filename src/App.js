@@ -13,7 +13,6 @@ function App() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [data, setData] = useState([]);
-  const [token, setToken] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginForm, setShowLoginForm] = useState(true);
   const [active, setActive] = useState('');
@@ -34,7 +33,6 @@ function App() {
           window.localStorage.setItem('x-access-token', data['x-access-token']);
           setData(data);
           setIsLoggedIn(true);
-          setToken(data['x-access-token']);
         })
         .catch(error => {
           console.error('Error fetching data:', error);
@@ -53,7 +51,6 @@ function App() {
   return (
       <Router>
         <div>
-          {/* Diğer form kodları */}
           <Routes>
             <Route
                 path="/Userlist"
@@ -107,13 +104,10 @@ function App() {
                 <button type="submit">Register</button>
               </form>
           )}
-
-          {/* Toggle Form Butonu */}
           <button onClick={toggleForm}>
             {showLoginForm ? 'Register' : 'Login'}
           </button>
 
-          {/* Userlist Tablosu */}
           <button onClick={() => setActive(true)}>Show User Table</button>
           <button onClick={() => setActive(false)}>Hide User Table</button>
         </div>
