@@ -1,8 +1,10 @@
 import DataTable from "react-data-table-component";
 import React, {useEffect, useState} from "react";
-import isLoggedIn from './App.js'
+import isLoggedIn from './App'
+import "./styles.css";
+import { createSlice, configureStore } from '@reduxjs/toolkit'
+import {Link} from "react-router-dom";
 
-  const token= window.localStorage.getItem('x-access-token')
   const columns = [
 
         {
@@ -24,10 +26,38 @@ import isLoggedIn from './App.js'
     ]
 
 function Userlist(){
+const counterSlice = createSlice({
+  name: 'counter',
+  initialState: {
+    value: 0
+  },
+  reducers: {
+    incremented: state => {
+      state.value += 1
+    },
+    decremented: state => {
+      state.value -= 1
+    }
+  }
+})
+    function disp(){store.dispatch(incremented())}
+
+const { incremented, decremented } = counterSlice.actions
+
+const store = configureStore({
+  reducer: counterSlice.reducer
+})
+
+store.subscribe(() => console.log(store.getState()))
+
+
       const [user, setUser] = useState('');
        useEffect(() => {
+           const token= window.localStorage.getItem('x-access-token')
+           console.log(window.localStorage.getItem('x-access-token'))
+           console.log('boş')
+
     const baseURL = process.env.REACT_APP_BASE_URL;
-    console.log(token);
     fetch(`${baseURL}/user`, {
       method: 'POST',
       headers: {
@@ -47,6 +77,10 @@ function Userlist(){
                   <DataTable
                       columns={columns} data={user}>
                   </DataTable>
+                  <Link to="/">
+                    <button>Main Page</button>
+                  </Link>
+                  <button onClick={disp}>tıkla artır</button>
               </div>
           )
 

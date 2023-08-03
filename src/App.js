@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import DataTable from 'react-data-table-component';
-import Userlist from './component/Userlist';
 import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Link
+  Link, useHistory, redirect
 } from 'react-router-dom';
 
 function App() {
@@ -15,7 +9,7 @@ function App() {
   const [data, setData] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginForm, setShowLoginForm] = useState(true);
-  const [active, setActive] = useState('');
+  const [active, setActive] = useState(true);
 
 
   const handleLogin = (e) => {
@@ -33,6 +27,7 @@ function App() {
           window.localStorage.setItem('x-access-token', data['x-access-token']);
           setData(data);
           setIsLoggedIn(true);
+          console.log(data['x-access-token'])
         })
         .catch(error => {
           console.error('Error fetching data:', error);
@@ -49,74 +44,69 @@ function App() {
 
 
   return (
-      <Router>
+    <div>
+      {isLoggedIn ? (
         <div>
-          <Routes>
-            <Route
-                path="/Userlist"
-                element={<Userlist userdata={data}/>}
-            />
-          </Routes>
-                    <h2>Login / Register</h2>
+          <h1>Login Succeed! Welcome Back</h1>
+            <Link to="/Userlist" target='_self'>
+            <button>Userlist</button>
+            </Link>
+        </div>
+      ) : (
+        <div>
+          <h2>Login / Register</h2>
           {showLoginForm ? (
-              <form onSubmit={handleLogin}>
-                <label htmlFor="email">Email:</label>
-                <input
-                    type="email"
-                    name="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
-                <br/>
-                <label htmlFor="password">Password:</label>
-                <input
-                    type="password"
-                    name="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
-                <input type="submit" value="Login"/>
-              </form>
+            <form onSubmit={handleLogin}>
+              <label htmlFor="email">Email:</label>
+              <input
+                type="email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <br />
+              <label htmlFor="password">Password:</label>
+              <input
+                type="password"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <br />
+              <button type="submit">Login</button>
+            </form>
           ) : (
-              <form onSubmit={handleRegister}>
-                <label htmlFor="name">Name:</label>
-                <input type="text" name="name" required/>
-                <br/>
-                <label htmlFor="email">Email:</label>
-                <input
-                    type="email"
-                    name="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                <br/>
-                <label htmlFor="password">Password:</label>
-                <input
-                    type="password"
-                    name="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
-                <br/>
-                <button type="submit">Register</button>
-              </form>
+            <form onSubmit={handleRegister}>
+              <label htmlFor="name">Name:</label>
+              <input type="text" name="name" required />
+              <br />
+              <label htmlFor="email">Email:</label>
+              <input
+                type="email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <br />
+              <label htmlFor="password">Password:</label>
+              <input
+                type="password"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <br />
+              <button type="submit">Register</button>
+            </form>
           )}
           <button onClick={toggleForm}>
             {showLoginForm ? 'Register' : 'Login'}
           </button>
-
-          <button onClick={() => setActive(true)}>Show User Table</button>
-          <button onClick={() => setActive(false)}>Hide User Table</button>
         </div>
-                    <div>
-            <Link to="/Userlist" target="_blank">
-              <button>Userlist</button>
-            </Link>
-          </div>
-      </Router>
+      )}
+    </div>
   );
 }
 
