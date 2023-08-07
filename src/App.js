@@ -2,14 +2,18 @@ import React, { useState, useEffect } from 'react';
 import {
   Link, useHistory, redirect
 } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux'
+import {fetchUsers} from "./features/users/usersSlice";
+import DataTable from "react-data-table-component";
+import {columns} from "./Columns";
+
 
 function App() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [data, setData] = useState([]);
+  const [arr, setArr] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginForm, setShowLoginForm] = useState(true);
-  const [active, setActive] = useState(true);
 
 
   const handleLogin = (e) => {
@@ -23,11 +27,10 @@ function App() {
       body: JSON.stringify({'email': email, 'password': password}),
     })
         .then(res => res.json())
-        .then(data => {
-          window.localStorage.setItem('x-access-token', data['x-access-token']);
-          setData(data);
+        .then(arr => {
+          window.localStorage.setItem('x-access-token', arr['x-access-token']);
+          setArr(arr);
           setIsLoggedIn(true);
-          console.log(data['x-access-token'])
         })
         .catch(error => {
           console.error('Error fetching data:', error);
@@ -43,8 +46,11 @@ function App() {
   };
 
 
+
+
+
   return (
-    <div>
+      <div>
       {isLoggedIn ? (
         <div>
           <h1>Login Succeed! Welcome Back</h1>
