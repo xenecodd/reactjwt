@@ -8,7 +8,7 @@ import { columns } from "../Columns";
 
 function Userlist() {
   const dispatch = useDispatch();
-  const loading = useSelector((state) => state.data);
+  const loading = useSelector((state) => state.data.loading);
   const users = useSelector((state) => state.data.users);
 
   const [active, setActive] = useState(false);
@@ -26,7 +26,7 @@ function Userlist() {
   return (
     <div className="container mt-5">
       <h1>List of Registered Users</h1>
-      <h3>{loading.loading}</h3>
+      <h3>{loading}</h3>
       <button onClick={toggleActive}>fetch users</button>
       {active && (
         <DataTable columns={columns} data={users}>

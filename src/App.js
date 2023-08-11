@@ -23,19 +23,27 @@ function App() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+
       },
       body: JSON.stringify({'email': email, 'password': password}),
     })
         .then(res => res.json())
         .then(arr => {
-          window.localStorage.setItem('x-access-token', arr['x-access-token']);
-          setArr(arr);
+          window.localStorage.setItem('session', JSON.stringify(arr));
+          const session=JSON.parse(window.localStorage.getItem('session'));
+          console.log(session)
+          if (session?.['x-access-token']) {
+          console.log('basarili')
+            }
           setIsLoggedIn(true);
         })
         .catch(error => {
           console.error('Error fetching data:', error);
         });
   };
+
+
+
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -117,3 +125,6 @@ function App() {
 }
 
 export default App;
+
+export class handleLogin {
+}
